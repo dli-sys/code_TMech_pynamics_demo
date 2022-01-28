@@ -1,0 +1,4 @@
+[submodule "code_pynamics"]
+	path = code_pynamics
+	url = https://github.com/idealabasu/code_pynamics.git
+	branch = master
