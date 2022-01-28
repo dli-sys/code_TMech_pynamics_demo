@@ -7,7 +7,15 @@ Written by Daniel M. Aukes and Dongting Li
 Email: danaukes<at>gmail.com
 Please see LICENSE for full license.
 """
+import sys
 import os
+
+script_dir=os.path.abspath(os.curdir)
+local_path = os.path.join(script_dir,'./code_pynamics/python')
+local_path = os.path.normpath(os.path.abspath(local_path))
+sys.path.insert(0,local_path)
+
+
 import pynamics
 from pynamics.frame import Frame
 from pynamics.variable_types import Differentiable,Constant
