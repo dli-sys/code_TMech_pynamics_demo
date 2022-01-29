@@ -212,7 +212,7 @@ T_ind_sym = T_ind.subs(initialvalues).subs(system.constant_values)
 max_T_halftway = ft1_T1.subs(system.constant_values)
 plt.close('all')
 # A_eq1 = numpy.array(max_T.jacobian(sympy.Matrix([fR,fL]))).astype(numpy.float64)
-max_fric =1.56
+max_fric =1.7
 bounds1 = [(0,max_fric),(0,max_fric)]
 
 from scipy.optimize import minimize_scalar
@@ -235,9 +235,11 @@ t_forces = t_forces1*-0.035
 # t_force_temp = t_forces[:,0]
 t_force_temp_max = numpy.amax(t_forces,axis=0)
 t_force_temp_min = numpy.amin(t_forces,axis=0)
+t_force_temp_avg = numpy.average(t_forces,axis=0)
 exp_angles = numpy.linspace(angle_start,angle_end,7)
 ft_max = interpolate.interp1d(exp_angles,t_force_temp_max,fill_value = 'extrapolate', kind='quadratic')
 ft_min = interpolate.interp1d(exp_angles,t_force_temp_min,fill_value = 'extrapolate', kind='quadratic')
+ft_avg = interpolate.interp1d(exp_angles,t_force_temp_avg,fill_value = 'extrapolate', kind='quadratic')
 
 
 for item in numpy.linspace(angle_start,angle_end,num):
@@ -267,10 +269,12 @@ plt.plot(numpy.linspace(angle_start,angle_end,num),t_max2*1000,'r')
 
 sim_angles = numpy.linspace(angle_start,angle_end,num)
 plt.fill_between(sim_angles,ft_max(sim_angles)*1000,ft_min(sim_angles)*1000,color='b',alpha=0.25)
-plt.fill_between(sim_angles,ft_max(numpy.flip(sim_angles))*1000,ft_min(numpy.flip(sim_angles))*1000,color='r',alpha=0.25)
+plt.plot(sim_angles,ft_avg(sim_angles)*1000,'b--')
+
+# plt.fill_between(sim_angles,ft_max(numpy.flip(sim_angles))*1000,ft_min(numpy.flip(sim_angles))*1000,color='r',alpha=0.25)
 
 T_loc = (t_max1+t_max2)/2
-ft0 = interpolate.interp1d(numpy.linspace(angle_start,angle_end,num),T_loc,fill_value = 'extrapolate', kind='quadratic')
+ft0     = interpolate.interp1d(numpy.linspace(angle_start,angle_end,num),T_loc,fill_value = 'extrapolate', kind='quadratic')
 ft1 = interpolate.interp1d(numpy.linspace(angle_start,angle_end,num),t_max1,fill_value = 'extrapolate', kind='quadratic')
 
 for item in numpy.linspace(angle_start,angle_end,7):
