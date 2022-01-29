@@ -269,6 +269,9 @@ for item in numpy.linspace(angle_start,angle_end,num):
     t_max2 = numpy.append(t_max2,max_T_value2)
 
 # fig, ax1 = plt.subplots(111)
+
+plt.rcParams["font.family"] = "Times New Roman"
+
 plt.plot(numpy.linspace(angle_start,angle_end,num),t_max1*1000,'b')
 plt.plot(numpy.linspace(angle_start,angle_end,num),t_max2*1000,'r')
 
@@ -297,7 +300,7 @@ for item in numpy.linspace(angle_start,angle_end,7):
    
     dis_x = item
     dis_y = ft0(angle_start+angle_end)/2
-    plot_one_config(item,displacement=[dis_x,dis_y*1000-60],amplify=100,side='l') 
+    plot_one_config(item,displacement=[dis_x,dis_y*1000-70],amplify=100,side='l') 
     
     # error_string1 = "%.7f" % (ft1(item)/0.035)
     # plt.text(dis_x,dis_y*1000,error_string1,ha='center',va='top') 
@@ -311,7 +314,7 @@ for item in numpy.linspace(angle_start,angle_end,7):
     initialvalues[qF_d] =0*pi/180
     dis_x = item
     dis_y =  ft0(angle_start+angle_end)/2
-    plot_one_config(item,displacement=[dis_x,dis_y*1000+15],amplify=100,side='r') 
+    plot_one_config(item,displacement=[dis_x,dis_y*1000+8],amplify=100,side='r') 
     # error_string1 = "%.7f" % (dis_y/0.035)
     # plt.text(dis_x,dis_y*1000+60,error_string1,ha='center',va='top') 
     # t_max = numpy.append(t_max,max_T_value)
@@ -322,8 +325,13 @@ plt.xticks(exp_angles)
 
 ax1 = plt.gca()
 ax1.grid()
-ax1.set_ylabel("Max Torque")
-ax1.set_xlabel("Joint angle")
+
+ax1.set_ylim(numpy.asarray(ax1.get_ylim())+[0,13])
+
+ax1.set_ylabel("Max Torque (Nm)")
+ax1.set_xlabel("Joint angle ($^{\circ}$)")
+
+plt.legend({"Left Side Sim","Left Side Exp Average"},loc='upper right')
 
 ax1.set_yticks(numpy.linspace(-20,-75,11))
 ax1.set_xticks(numpy.linspace(-45,45,7))

@@ -569,9 +569,9 @@ def plot_one_config(angle_value,angle_tilt,displacement=[0,0],amplify=1):
     initialvalues[qE_d] = 0     
     statevariables = system.get_state_variables()
     ini0 = [initialvalues[item] for item in statevariables]  
-    ax2 = draw_skeleton(ini0, [pNA,pAB,pBD,pCD,pNA],linestyle='b--',displacement=displacement,amplify=amplify)
+    ax2 = draw_skeleton(ini0, [pNA,pAB,pBD,pCD,pNA],linestyle='solid',displacement=displacement,amplify=amplify)
     return ax2,initialvalues
-plot_one_config(q1_value,ori_value,[x_dis,y_dis],amplify=100)
+# plot_one_config(q1_value,ori_value,[x_dis,y_dis],amplify=100)
 # ax1 = plot_one_config(75,0,[0,0])
 # ax1 = plot_one_config(75,0,[0.05,0])
 # ax1 = plot_one_config(75,0,[0.05,0.05])
