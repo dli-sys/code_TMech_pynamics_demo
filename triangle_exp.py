@@ -242,13 +242,15 @@ for item in numpy.linspace(angle_start,angle_end,num):
 
 plt.rcParams["font.family"] = "Times New Roman"
 
-plt.plot(numpy.linspace(angle_start,angle_end,num),t_max1*1000,'b')
-plt.plot(numpy.linspace(angle_start,angle_end,num),t_max2*1000,'r')
+plt.plot(numpy.linspace(angle_start,angle_end,num),t_max1*1000,'b--')
+plt.plot(numpy.linspace(angle_start,angle_end,num),t_max2*1000,'r--')
 
 
 sim_angles = numpy.linspace(angle_start,angle_end,num)
 plt.fill_between(sim_angles,ft_max(sim_angles)*1000,ft_min(sim_angles)*1000,color='b',alpha=0.25)
-plt.plot(sim_angles,ft_avg(sim_angles)*1000,'b--')
+plt.plot(exp_angles,t_force_temp_avg*1000,'b',marker='d')
+plt.plot(sim_angles,ft_max(sim_angles)*1000,color='b',alpha=0.4)
+plt.plot(sim_angles,ft_min(sim_angles)*1000,color='b',alpha=0.4)
 
 T_loc = (t_max1+t_max2)/2
 ft0     = interpolate.interp1d(numpy.linspace(angle_start,angle_end,num),T_loc,fill_value = 'extrapolate', kind='quadratic')
@@ -289,7 +291,7 @@ ax1.set_ylim(numpy.asarray(ax1.get_ylim())+[0,13])
 ax1.set_ylabel("Max Torque (Nm)")
 ax1.set_xlabel("Joint angle ($^{\circ}$)")
 
-plt.legend({"Left Side Sim","Left Side Exp Average"},loc='upper right')
+plt.legend({"Left Side Sim","Right Side Sim","Error","Left Side Exp Average"},loc='upper right')
 
 ax1.set_yticks(numpy.linspace(-20,-75,11))
 ax1.set_xticks(numpy.linspace(-45,45,7))
