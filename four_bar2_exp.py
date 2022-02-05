@@ -410,9 +410,9 @@ angle_2d1,angle_2d2=numpy.meshgrid(angle_plot,angle_tilt_plot)
 
 t_maxs_2d = []
 
-# fig, (ax1, ax2) = plt.subplots(2)
-# ax2 = plt.subplot(222)
-# ax3 = plt.subplot(223)
+plt.rcParams["font.family"] = "Times New Roman"
+import time
+time.sleep(1)
 
 from scipy import interpolate
 data_dir = os.path.join(os.getcwd(),'exp_data')
@@ -483,7 +483,7 @@ import matplotlib.colors
 ax2=plt.subplot(111)  
 im = ax2.pcolormesh(angle_2d2,angle_2d1,t_maxs_2d.astype('float'),shading='gouraud',cmap='coolwarm')
 plt.colorbar(im)
-plt.rcParams["font.family"] = "Times New Roman"
+
 ax1.set_ylabel("Inner angle $q_{AC}$($^{\circ}$)",fontsize=10)
 ax1.set_xlabel("Orientation $q_a$($^{\circ}$)",fontsize=10)
 plt.title("(a) Max torque $T_{tip}$($Nm$)",fontsize=10)
@@ -531,6 +531,7 @@ t_force_temp_max = numpy.amax(t_forces,axis=0)
 t_force_temp_min = numpy.amin(t_forces,axis=0)
 t_force_temp_avg = numpy.average(t_forces,axis=0)
 exp_angles = numpy.linspace(30,-30,5)
+
 ft0 = interpolate.interp1d(exp_angles,t_forces,fill_value = 'extrapolate', kind='quadratic')
 
 ft_max = interpolate.interp1d(exp_angles,t_force_temp_max,fill_value = 'extrapolate', kind='quadratic')
@@ -538,14 +539,14 @@ ft_min = interpolate.interp1d(exp_angles,t_force_temp_min,fill_value = 'extrapol
 
 sim_angles = numpy.linspace(30,-30,50)
 
-ax3.fill_between(sim_angles,ft_max(sim_angles),ft_min(sim_angles),color='b',alpha=0.25)
-ax3.plot(sim_angles,ft_max(sim_angles),color='b',alpha=0.4)
-ax3.plot(sim_angles,ft_min(sim_angles),color='b',alpha=0.4)
+ax3.fill_between(exp_angles,ft_max(exp_angles),ft_min(exp_angles),color='b',alpha=0.25,label='_nolegend_')
+ax3.plot(exp_angles,ft_max(exp_angles),color='b',alpha=0.4,label='_nolegend_')
+ax3.plot(exp_angles,ft_min(exp_angles),color='b',alpha=0.4,label='_nolegend_')
 # ax3.fill_between(sim_angles,ft_max(numpy.flip(sim_angles))*1000,ft_min(numpy.flip(sim_angles))*1000,color='r',alpha=0.25)
 
 t_max1 = ft0(sim_angles)
-ax3.plot(exp_angles, t_maxs_2d[:,2]*1000,'r')
-ax3.plot(exp_angles, t_force_temp_avg,'b-',marker='d')
+ax3.plot(exp_angles, t_maxs_2d[:,2]*1000,'r',label='Simulated')
+ax3.plot(exp_angles, t_force_temp_avg,'b-',marker='d',label='Experiments')
 
 for item in range(0,5):
     x_dis = angle_tilt_plot[item]
@@ -556,3 +557,4 @@ for item in range(0,5):
     # print("%.0f" %(ori_value))
     ax1,initialvalues1 = plot_one_config(q1_value,ori_value,[x_dis,y_dis],amplify=100)
 
+plt.legend()

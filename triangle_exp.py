@@ -241,19 +241,19 @@ for item in numpy.linspace(angle_start,angle_end,num):
 # fig, ax1 = plt.subplots(111)
 
 plt.rcParams["font.family"] = "Times New Roman"
+plt.rcParams["font.size"] = "15"
 
-plt.plot(numpy.linspace(angle_start,angle_end,num),t_max1*1000,'b--')
-plt.plot(numpy.linspace(angle_start,angle_end,num),t_max2*1000,'r--')
-
+plt.plot(numpy.linspace(angle_start,angle_end,num),t_max1*1000,'b--',label='Left side Sim')
+plt.plot(numpy.linspace(angle_start,angle_end,num),t_max2*1000,'r--',label='Right side Sim')
 
 sim_angles = numpy.linspace(angle_start,angle_end,num)
-plt.fill_between(sim_angles,ft_max(sim_angles)*1000,ft_min(sim_angles)*1000,color='b',alpha=0.25)
-plt.plot(exp_angles,t_force_temp_avg*1000,'b',marker='d')
-plt.plot(sim_angles,ft_max(sim_angles)*1000,color='b',alpha=0.4)
-plt.plot(sim_angles,ft_min(sim_angles)*1000,color='b',alpha=0.4)
+plt.fill_between(exp_angles,ft_max(exp_angles)*1000,ft_min(exp_angles)*1000,color='b',alpha=0.25)
+plt.plot(exp_angles,t_force_temp_avg*1000,'b',marker='d',label='Experiments')
+plt.plot(exp_angles,ft_max(exp_angles)*1000,color='b',alpha=0.4,label='_nolegend_')
+plt.plot(exp_angles,ft_min(exp_angles)*1000,color='b',alpha=0.4,label='_nolegend_')
 
 T_loc = (t_max1+t_max2)/2
-ft0     = interpolate.interp1d(numpy.linspace(angle_start,angle_end,num),T_loc,fill_value = 'extrapolate', kind='quadratic')
+ft0  = interpolate.interp1d(numpy.linspace(angle_start,angle_end,num),T_loc,fill_value = 'extrapolate', kind='quadratic')
 ft1 = interpolate.interp1d(numpy.linspace(angle_start,angle_end,num),t_max1,fill_value = 'extrapolate', kind='quadratic')
 
 for item in numpy.linspace(angle_start,angle_end,7):
@@ -291,8 +291,8 @@ ax1.set_ylim(numpy.asarray(ax1.get_ylim())+[0,13])
 ax1.set_ylabel("Max Torque (Nm)")
 ax1.set_xlabel("Joint angle ($^{\circ}$)")
 
-plt.legend({"Left Side Sim","Right Side Sim","Error","Left Side Exp Average"},loc='upper right')
-
+# plt.legend({"Left Side Sim","Right Side Sim","Error","Left Side Exp Average"},loc='upper right')
+plt.legend(loc='upper center',ncol=3, )
 ax1.set_yticks(numpy.linspace(-20,-75,11))
 ax1.set_xticks(numpy.linspace(-45,45,7))
 
