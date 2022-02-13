@@ -11,8 +11,9 @@ Two code are used to repliacte the experiments:
   2. triangle_exp.py is the code we used in Sec. III-D and Sec. IV-C. This code also generates Fig. 10
 These two code were used to simulate the experiments only and not used towards the system calculation.
 ### System calculation
-One master code is used to generate the system states.
-Two slave code are used to calculate the system dimension, namely, four_bar2_system.py and fourbar_with_two_triangle.py
 
+Two sub scriptrs are used to calculate the system dimension, namely, four_bar2_system.py and fourbar_with_two_triangle.py
+four_bar2_system.py is to calculate the top four-bar holding force/torque and
+fourbar_with_two_triangle.py is to calculate the lower triangle element force/torque
 ## Contact
-Please contact dongting@asu.edu for any questions.
+Please contact the author dongting@asu.edu for any questions.
