@@ -477,20 +477,3 @@ plt.figure()
 plt.plot(numpy.linspace(0,89,num),value)
 plt.legend(["f1","f2","f3","f4"])
 plt.grid()
-
-# plt.figure()
-# plt.plot(numpy.linspace(0,89,num),values[1::,2])
-# plt.legend(["f1","f2","f3","f4"])
-# plt.grid()
-
-
-# print((J_t_ind.subs(initialvalues).subs(cond1).T).dot(res.x))
-# print(T_ind.subs(initialvalues).subs(cond1))
-
-# print(ft_error_sym)
-
-# a = ft_error_sym.subs({f1:0,f3:0})
-# print(sympy.solve(a))
-
-# b = ft_error_sym.subs({f2:0,f4:0})
-# print(sympy.solve(b))

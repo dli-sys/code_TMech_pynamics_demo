@@ -41,7 +41,8 @@ def draw_skeleton(ini0,points1,fig,linestyle='solid'):
     # points1 = [pGR,pFR,pER,pAB]
     po2 = PointsOutput(points1, constant_values=system.constant_values)
     po2.calc(numpy.array([ini0,ini0]),[0,1])
-    po2.plot_time(fig=fig,linestyle=linestyle)
+    po2.plot_time_c(newPlot=False,linestyle=linestyle)
+
 
 
 def gen_system(para):
@@ -250,12 +251,22 @@ def gen_system(para):
     draw_skeleton(ini0,[pFM,pEM,pEM2,pFE],fig1)   
     if nth==2:
         draw_skeleton(ini0,[pFM,pFE],fig1,linestyle='dashed')
+        # draw_skeleton(ini0,[pXR,pFM,pXL],fig1)
         draw_skeleton(ini0,[pXR,pEM,pXL],fig1)
+        draw_skeleton(ini0,[pXR,pEM2,pXL],fig1)
         draw_skeleton(ini0,[pEM2,pDR,pFE],fig1)
+        
+        draw_skeleton(ini0,[pGL,pFM,pGR],fig1)
+        draw_skeleton(ini0,[pFL,pEM,pFR],fig1)
+
+        
         draw_skeleton(ini0,[pEM2,pDL,pFE],fig1,linestyle='dashed')
     if nth==3:
         draw_skeleton(ini0,[pNG,pGF],fig1,linestyle='dashed')
         draw_skeleton(ini0,[pGF,pFE],fig1,linestyle='dashed')
+        draw_skeleton(ini0,[pXR,pGM,pXL],fig1)
+        draw_skeleton(ini0,[pGL,pFM,pGR],fig1)
+        draw_skeleton(ini0,[pFL,pEM,pFR],fig1)
         draw_skeleton(ini0,[pXR,pNG,pXL],fig1)
         draw_skeleton(ini0,[pEM,pDR,pFE],fig1)
         draw_skeleton(ini0,[pEM,pDL,pFE],fig1,linestyle='dashed')
@@ -333,7 +344,7 @@ def gen_system(para):
     max_T = ft1_T1.subs(initialvalues).subs(system.constant_values)
     
     # A_eq1 = numpy.array(max_T.jacobian(sympy.Matrix([fR,fL]))).astype(numpy.float64)
-    max_fric = 5
+    max_fric = 3.6
     bounds1 = [(0,max_fric),(0,max_fric)]
     
     from scipy.optimize import minimize_scalar
@@ -403,50 +414,15 @@ def calculate_force_angle(load):
 
 # para = [1*pi/3,0,pi/6,pi/6,pi/6,0.01,0.06,0.1,2]   
 
-para = [1*pi/3,0,pi/6,-pi/3,pi/6,0.05,0.1,0.08,3]  
+para = [1*pi/4,0,0,0,0,0.04,0.085,0.073,2]  
  
 system = System()
 pynamics.set_system(__name__,system)
 ft_error_T1,fR,fL,T_ind_sym,max_T = gen_system(para)
-aa = calculate_force_angle([1,0,0])
+# aa = calculate_force_angle([1,0,0])
 
-angle_range = pi/2-(math.atan2(para[6]/2,para[7])+pi/36)
-math.degrees(angle_range)
-# 
-num = 2
-for item in numpy.linspace(-angle_range,angle_range,num):
-    print(item)
-    # print(calculate_force_angle(item))
-    para[3] = item
-    system = System()
-    pynamics.set_system(__name__,system)
-    ft_error_T1,fR,fL,T_ind_sym,max_T = gen_system(para)
-    aa = calculate_force_angle([0,0,1])
-    if item == -angle_range:
-        values = aa[0]
-        T_values = aa[-1]
-        max_T_values = max_T
-    else:
-        values = numpy.vstack([values,aa[0]])
-        T_values = numpy.vstack([T_values,aa[-1]])
-        max_T_values = numpy.vstack([max_T_values,max_T])
+print(ft_error_T1)
 
 
+# external_load = ft_error_T1.subs({T_tip:0})
 
-fig, ax1 = plt.subplots()
-ln1=ax1.plot(numpy.rad2deg(numpy.linspace(-angle_range,angle_range,num)),values,'-',label=(r"$f_R$",r"$f_L$"))
-ax1.set_xlabel('Angle ($^{\circ}$)')
-ax1.set_ylabel('Tendon Force (N)')
-ax2 = ax1.twinx()
-ln2=ax2.plot(numpy.rad2deg(numpy.linspace(-angle_range,angle_range,num)),max_T_values,color='r',linestyle='dashed',label=(r"$T$"))
-ax2.set_ylabel('Max Holding Torque (Nm)')
-lns = ln1+ln2
-labs = [l.get_label() for l in lns]
-ax1.legend(lns, labs, loc=0)
-
-# plt.figure()
-# plt.plot(numpy.rad2deg(numpy.linspace(-angle_range,angle_range,num)),T_values)
-# ax1.legend([r"$f_R$",r"$f_L$"])
-# fig.legend([r"$f_R$",r"$f_L$",r"$T$"],loc='upper left')
-# fig.tight_layout()  # otherwise the right y-label is slightly clipped
-plt.show()
